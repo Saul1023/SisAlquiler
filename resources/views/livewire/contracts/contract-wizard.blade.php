@@ -456,11 +456,11 @@
                             </h3>
                             <div>
                                 <span class="block text-[10px] text-slate-400">Fecha de Entrada</span>
-                                <span class="font-bold text-slate-700 dark:text-slate-350">{{ Carbon::parse($start_date)->format('d/m/Y') }}</span>
+                                <span class="font-bold text-slate-700 dark:text-slate-350">{{ \Carbon\Carbon::parse($start_date)->format('d/m/Y') }}</span>
                             </div>
                             <div>
                                 <span class="block text-[10px] text-slate-400">Fecha de Salida</span>
-                                <span class="font-bold text-slate-700 dark:text-slate-350">{{ $end_date ? Carbon::parse($end_date)->format('d/m/Y') : 'Indefinido (Indeterminado)' }}</span>
+                                <span class="font-bold text-slate-700 dark:text-slate-350">{{ $end_date ? \Carbon\Carbon::parse($end_date)->format('d/m/Y') : 'Indefinido (Indeterminado)' }}</span>
                             </div>
                             <div>
                                 <span class="block text-[10px] text-slate-400">Frecuencia y Día de Pago</span>
