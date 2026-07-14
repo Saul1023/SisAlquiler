@@ -1,9 +1,9 @@
-<div x-data="{ open: @entangle('isOpen') }" class="relative">
+<div x-data="{ open: false }" class="relative">
     
     <!-- Floating AI Bubble Button (visible when closed) -->
     <button 
         x-show="!open" 
-        @click="open = true; @this.toggleChat()" 
+        @click="open = true; setTimeout(() => { const chatHistoryDiv = document.getElementById('copilot-chat-history'); if (chatHistoryDiv) { chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight; } }, 100);" 
         x-transition:enter="transition ease-out duration-300 transform"
         x-transition:enter-start="translate-y-10 opacity-0 scale-90"
         x-transition:enter-end="translate-y-0 opacity-100 scale-100"
@@ -28,7 +28,7 @@
         style="display: none;"
     >
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-slate-900/20 backdrop-blur-xs" @click="open = false; @this.toggleChat()"></div>
+        <div class="absolute inset-0 bg-slate-900/20 backdrop-blur-xs" @click="open = false"></div>
 
         <!-- Chat Side Drawer -->
         <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
@@ -64,7 +64,7 @@
                             </button>
                         @endif
                         <!-- Close Drawer Button -->
-                        <button @click="open = false; @this.toggleChat()" class="p-1.5 text-slate-450 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        <button @click="open = false" class="p-1.5 text-slate-450 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                             <i class="fa-solid fa-xmark text-lg"></i>
                         </button>
                     </div>

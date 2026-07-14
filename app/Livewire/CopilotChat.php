@@ -8,7 +8,6 @@ use App\Models\Setting;
 
 class CopilotChat extends Component
 {
-    public $isOpen = false;
     public $message = '';
     public $chatHistory = [];
     public $hasApiKey = false;
@@ -24,15 +23,6 @@ class CopilotChat extends Component
     public function checkApiKey()
     {
         $this->hasApiKey = !empty(Setting::get('gemini_api_key'));
-    }
-
-    public function toggleChat()
-    {
-        $this->isOpen = !$this->isOpen;
-        if ($this->isOpen) {
-            $this->checkApiKey();
-            $this->dispatch('chat-opened');
-        }
     }
 
     public function sendMessage()
