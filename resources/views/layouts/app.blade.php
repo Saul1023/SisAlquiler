@@ -275,6 +275,7 @@
                 });
             });
         </script>
+        <livewire:copilot-chat />
         @stack('js')
     </body>
 </html>

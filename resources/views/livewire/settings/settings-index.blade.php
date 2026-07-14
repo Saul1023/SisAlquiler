@@ -31,6 +31,13 @@
             >
                 <i class="fa-solid fa-shield-halved text-sm"></i> Seguridad
             </button>
+            <button 
+                wire:click="$set('activeTab', 'ia')" 
+                class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left font-bold transition-all
+                    {{ $activeTab === 'ia' ? 'bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400' : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-800' }}"
+            >
+                <i class="fa-solid fa-robot text-sm"></i> Inteligencia Artificial
+            </button>
         </div>
 
         <!-- Tab Content Area -->
@@ -214,6 +221,31 @@
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2 rounded-xl shadow-md flex items-center gap-1.5 transition-all">
                             <span wire:loading wire:target="changePassword" class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin shrink-0"></span>
                             Cambiar Contraseña
+                        </button>
+                    </div>
+                </form>
+            @endif
+
+            <!-- Tab 4: IA Config -->
+            @if($activeTab === 'ia')
+                <form wire:submit.prevent="saveAI" class="divide-y divide-slate-100 dark:divide-slate-700/30">
+                    <div class="p-6 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider font-outfit mb-4">Configuración de Inteligencia Artificial</h3>
+                        <p class="text-[10px] text-slate-400 -mt-2">Configura la clave de la API de Google Gemini para habilitar el asistente Copiloto IA de consultas semánticas.</p>
+
+                        <div class="space-y-1">
+                            <label class="block font-bold text-slate-600 dark:text-slate-350">Gemini API Key *</label>
+                            <input type="password" wire:model="gemini_api_key" placeholder="AIzaSy..." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-250 dark:border-slate-650 rounded-xl focus:border-blue-500 focus:outline-none text-slate-800 dark:text-slate-100 font-mono">
+                            @error('gemini_api_key') <span class="block text-[10px] text-rose-500">{{ $message }}</span> @enderror
+                            <span class="block text-[9px] text-slate-400 mt-1 leading-relaxed">Puedes obtener una clave gratuita registrándote en <a href="https://aistudio.google.com/" target="_blank" class="text-blue-500 hover:underline">Google AI Studio</a>. Esta clave se almacena cifrada en la base de datos de manera local.</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer Action -->
+                    <div class="px-6 py-4 bg-slate-50 dark:bg-slate-800/80 flex justify-end">
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-2 rounded-xl shadow-md flex items-center gap-1.5 transition-all">
+                            <span wire:loading wire:target="saveAI" class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin shrink-0"></span>
+                            Guardar Configuración
                         </button>
                     </div>
                 </form>

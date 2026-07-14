@@ -36,6 +36,9 @@ class SettingsIndex extends Component
     public $new_password = '';
     public $new_password_confirmation = '';
 
+    // Tab 4: AI config
+    public $gemini_api_key = '';
+
     public function mount()
     {
         // Load Company Info & Pricing
@@ -56,6 +59,9 @@ class SettingsIndex extends Component
         $this->mail_password = Setting::get('mail_password', '');
         $this->mail_encryption = Setting::get('mail_encryption', 'tls');
         $this->mail_from_address = Setting::get('mail_from_address', 'hello@example.com');
+
+        // Load AI config
+        $this->gemini_api_key = Setting::get('gemini_api_key', '');
     }
 
     public function saveCompany()
@@ -123,6 +129,17 @@ class SettingsIndex extends Component
         $this->new_password_confirmation = '';
 
         $this->dispatch('swal:toast', type: 'success', message: 'Contraseña actualizada con éxito.');
+    }
+
+    public function saveAI()
+    {
+        $this->validate([
+            'gemini_api_key' => 'nullable|string|max:100',
+        ]);
+
+        Setting::set('gemini_api_key', $this->gemini_api_key ?? '');
+
+        $this->dispatch('swal:toast', type: 'success', message: 'Configuraciones de IA guardadas con éxito.');
     }
 
     public function render()

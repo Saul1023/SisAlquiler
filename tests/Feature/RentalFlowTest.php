@@ -33,8 +33,7 @@ class RentalFlowTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function an_authenticated_user_can_create_a_room()
+    public function test_an_authenticated_user_can_create_a_room()
     {
         $this->actingAs($this->user);
 
@@ -54,8 +53,7 @@ class RentalFlowTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function an_authenticated_user_can_register_a_tenant()
+    public function test_an_authenticated_user_can_register_a_tenant()
     {
         $this->actingAs($this->user);
 
@@ -73,8 +71,7 @@ class RentalFlowTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function a_user_can_create_a_contract_using_the_wizard()
+    public function test_a_user_can_create_a_contract_using_the_wizard()
     {
         $this->actingAs($this->user);
 
@@ -118,8 +115,7 @@ class RentalFlowTest extends TestCase
         $this->assertEquals('Ocupado', $room->fresh()->status);
     }
 
-    /** @test */
-    public function a_user_can_record_a_payment_for_a_contract()
+    public function test_a_user_can_record_a_payment_for_a_contract()
     {
         $this->actingAs($this->user);
 
@@ -166,5 +162,29 @@ class RentalFlowTest extends TestCase
             'period_covered' => '2026-06',
             'status' => 'Pagado',
         ]);
+    }
+
+    public function test_it_can_generate_structured_system_context_for_gemini()
+    {
+        // Seed a room
+        Room::create([
+            'room_number' => '601',
+            'floor' => 'Piso 6',
+            'capacity' => 1,
+            'price' => 400.00,
+            'status' => 'Disponible'
+        ]);
+
+        $context = \App\Services\GeminiService::generateDatabaseContext();
+
+        $this->assertIsArray($context);
+        $this->assertArrayHasKey('inventario_cuartos', $context);
+        $this->assertArrayHasKey('inquilinos', $context);
+        $this->assertArrayHasKey('contratos_activos', $context);
+        $this->assertArrayHasKey('deudas_pendientes', $context);
+        
+        $rooms = $context['inventario_cuartos'];
+        $this->assertNotEmpty($rooms);
+        $this->assertEquals('601', $rooms[0]['cuarto']);
     }
 }
