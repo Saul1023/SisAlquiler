@@ -138,7 +138,7 @@ CONTEXTO DEL SISTEMA (JSON DE LA BASE DE DATOS):
         $contents = [];
 
         // 1. Add context and instructions as the primary user payload or system instruction
-        // Note: gemini-1.5-flash supports systemInstructions parameter in the query or in the body,
+        // Note: gemini-3.5-flash supports systemInstructions parameter in the query or in the body,
         // but putting it as a master prompt in the first message is highly compatible and robust.
         $contents[] = [
             'role' => 'user',
@@ -172,11 +172,14 @@ CONTEXTO DEL SISTEMA (JSON DE LA BASE DE DATOS):
             ]
         ];
 
+        // Increase PHP execution time limit and set safe request timeout
+        @set_time_limit(60);
+
         try {
             // Call Google Gemini API
-            $response = Http::withHeaders([
+            $response = Http::withoutVerifying()->withHeaders([
                 'Content-Type' => 'application/json',
-            ])->timeout(30)->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}", [
+            ])->timeout(20)->post("https://generativelanguage.googleapis.com/v1/models/gemini-3.5-flash:generateContent?key={$apiKey}", [
                 'contents' => $contents,
                 'generationConfig' => [
                     'temperature' => 0.2, // Low temperature for precise data facts

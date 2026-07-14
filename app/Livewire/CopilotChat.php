@@ -8,6 +8,7 @@ use App\Models\Setting;
 
 class CopilotChat extends Component
 {
+    public $isOpen = false; // Kept for backwards-compatibility with active browser sessions
     public $message = '';
     public $chatHistory = [];
     public $hasApiKey = false;
