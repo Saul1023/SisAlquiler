@@ -48,7 +48,7 @@ class SettingsIndex extends Component
         $this->currency = Setting::get('currency', 'Bs.');
         $this->grace_days = (int)Setting::get('grace_days', 3);
         $this->wifi_price = Setting::get('wifi_price', '50.00');
-        $this->parking_price = Setting::get('parking_price', '100.00');
+        $this->parking_price = Setting::get('parking_price', '50.00');
         $this->cleaning_price = Setting::get('cleaning_price', '80.00');
         $this->water_light_price = Setting::get('water_light_price', '70.00');
 

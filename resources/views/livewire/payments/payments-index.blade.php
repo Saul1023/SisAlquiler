@@ -68,7 +68,7 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
+            <table class="w-full text-left text-xs border-collapse responsive-table">
                 <thead>
                     <tr class="bg-slate-50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider border-b border-slate-100 dark:border-slate-700/30">
                         <th class="px-5 py-3.5 cursor-pointer hover:bg-slate-100/50 dark:hover:bg-slate-700/30" wire:click="sortBy('receipt_number')">
@@ -92,12 +92,12 @@
                     @forelse($payments as $payment)
                         <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors duration-200">
                             <!-- Receipt Number -->
-                            <td class="px-5 py-3.5 font-bold text-slate-800 dark:text-slate-200">
+                            <td data-label="Recibo" class="px-5 py-3.5 font-bold text-slate-800 dark:text-slate-200">
                                 {{ $payment->receipt_number ?: '-' }}
                             </td>
 
                             <!-- Tenant -->
-                            <td class="px-5 py-3.5">
+                            <td data-label="Inquilino" class="px-5 py-3.5">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ $payment->contract->tenant->photo_url ?? '' }}" alt="" class="w-6 h-6 rounded-full object-cover">
                                     <div>
@@ -108,32 +108,32 @@
                             </td>
 
                             <!-- Room -->
-                            <td class="px-5 py-3.5 font-medium text-slate-600 dark:text-slate-400">
+                            <td data-label="Cuarto" class="px-5 py-3.5 font-medium text-slate-600 dark:text-slate-400">
                                 Cuarto {{ $payment->contract->room->room_number ?? 'N/A' }}
                             </td>
 
                             <!-- Covered Period -->
-                            <td class="px-5 py-3.5">
+                            <td data-label="Periodo" class="px-5 py-3.5">
                                 <span class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-350 px-2 py-0.5 rounded font-mono font-bold">{{ $payment->period_covered }}</span>
                             </td>
 
                             <!-- Payment Date -->
-                            <td class="px-5 py-3.5 font-medium text-slate-750 dark:text-slate-350">
+                            <td data-label="F. Pago" class="px-5 py-3.5 font-medium text-slate-750 dark:text-slate-350">
                                 {{ $payment->payment_date->format('d/m/Y') }}
                             </td>
 
                             <!-- Payment Method -->
-                            <td class="px-5 py-3.5 text-slate-600 dark:text-slate-400">
+                            <td data-label="Método" class="px-5 py-3.5 text-slate-600 dark:text-slate-400">
                                 {{ $payment->payment_method }}
                             </td>
 
                             <!-- Amount -->
-                            <td class="px-5 py-3.5 font-extrabold text-slate-900 dark:text-white font-mono">
+                            <td data-label="Monto Cobrado" class="px-5 py-3.5 font-extrabold text-slate-900 dark:text-white font-mono">
                                 {{ \App\Models\Setting::get('currency', 'Bs.') }} {{ number_format($payment->amount, 2) }}
                             </td>
 
                             <!-- Status -->
-                            <td class="px-5 py-3.5">
+                            <td data-label="Estado" class="px-5 py-3.5">
                                 <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase
                                     @if($payment->status === 'Pagado') bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-450 border border-emerald-100 dark:border-emerald-900/20
                                     @elseif($payment->status === 'Pendiente') bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-450 border border-amber-100 dark:border-amber-900/20
@@ -145,7 +145,7 @@
                             </td>
 
                             <!-- Actions -->
-                            <td class="px-5 py-3.5 text-right space-x-0.5 shrink-0">
+                            <td data-label="Acciones" class="px-5 py-3.5 text-right space-x-0.5 shrink-0">
                                 @if($payment->status === 'Pagado')
                                     <!-- Print PDF Receipt -->
                                     <button wire:click="downloadReceipt({{ $payment->id }})" class="p-2 text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-350 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="Descargar Recibo PDF">

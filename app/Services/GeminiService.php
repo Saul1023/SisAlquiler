@@ -25,7 +25,7 @@ class GeminiService
             'grace_days' => Setting::get('grace_days', '3'),
             'service_prices' => [
                 'wifi' => Setting::get('wifi_price', '50.00'),
-                'parking' => Setting::get('parking_price', '100.00'),
+                'parking' => Setting::get('parking_price', '50.00'),
                 'cleaning' => Setting::get('cleaning_price', '80.00'),
                 'water_light' => Setting::get('water_light_price', '70.00'),
             ]
@@ -138,7 +138,7 @@ CONTEXTO DEL SISTEMA (JSON DE LA BASE DE DATOS):
         $contents = [];
 
         // 1. Add context and instructions as the primary user payload or system instruction
-        // Note: gemini-3.5-flash supports systemInstructions parameter in the query or in the body,
+        // Note: gemini-3.1-flash-lite supports systemInstructions parameter in the query or in the body,
         // but putting it as a master prompt in the first message is highly compatible and robust.
         $contents[] = [
             'role' => 'user',
@@ -179,7 +179,7 @@ CONTEXTO DEL SISTEMA (JSON DE LA BASE DE DATOS):
             // Call Google Gemini API
             $response = Http::withoutVerifying()->withHeaders([
                 'Content-Type' => 'application/json',
-            ])->timeout(20)->post("https://generativelanguage.googleapis.com/v1/models/gemini-3.5-flash:generateContent?key={$apiKey}", [
+            ])->timeout(20)->post("https://generativelanguage.googleapis.com/v1/models/gemini-3.1-flash-lite:generateContent?key={$apiKey}", [
                 'contents' => $contents,
                 'generationConfig' => [
                     'temperature' => 0.2, // Low temperature for precise data facts

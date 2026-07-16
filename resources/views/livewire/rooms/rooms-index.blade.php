@@ -105,7 +105,7 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
+            <table class="w-full text-left text-xs border-collapse responsive-table">
                 <thead>
                     <tr class="bg-slate-50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider border-b border-slate-100 dark:border-slate-700/30">
                         <th class="px-5 py-3.5 cursor-pointer hover:bg-slate-100/50 dark:hover:bg-slate-700/30" wire:click="sortBy('room_number')">
@@ -129,7 +129,7 @@
                     @forelse($rooms as $room)
                         <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors duration-200">
                             <!-- Room Number -->
-                            <td class="px-5 py-3.5 font-bold text-slate-900 dark:text-white">
+                            <td data-label="Número" class="px-5 py-3.5 font-bold text-slate-900 dark:text-white">
                                 <div class="flex items-center gap-2">
                                     <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs
                                         {{ $room->status === 'Disponible' ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400' : ($room->status === 'Ocupado' ? 'bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400' : 'bg-amber-50 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400') }}">
@@ -139,22 +139,22 @@
                             </td>
 
                             <!-- Location -->
-                            <td class="px-5 py-3.5 font-medium text-slate-700 dark:text-slate-300">{{ $room->floor }}</td>
+                            <td data-label="Ubicación" class="px-5 py-3.5 font-medium text-slate-700 dark:text-slate-300">{{ $room->floor }}</td>
 
                             <!-- Capacity -->
-                            <td class="px-5 py-3.5 text-slate-600 dark:text-slate-400">
+                            <td data-label="Capacidad" class="px-5 py-3.5 text-slate-600 dark:text-slate-400">
                                 <span class="flex items-center gap-1.5">
                                     <i class="fa-solid fa-user-group text-[10px]"></i> {{ $room->capacity }} {{ $room->capacity == 1 ? 'Persona' : 'Personas' }}
                                 </span>
                             </td>
 
                             <!-- Price -->
-                            <td class="px-5 py-3.5 font-bold text-slate-800 dark:text-slate-200">
+                            <td data-label="Precio Base" class="px-5 py-3.5 font-bold text-slate-800 dark:text-slate-200">
                                 {{ \App\Models\Setting::get('currency', 'Bs.') }} {{ number_format($room->price, 2) }}
                             </td>
 
                             <!-- Status Dropdown Toggle (Alpine) -->
-                            <td class="px-5 py-3.5" x-data="{ dropdownOpen: false }">
+                            <td data-label="Estado" class="px-5 py-3.5" x-data="{ dropdownOpen: false }">
                                 <div class="relative">
                                     <button 
                                         @click="dropdownOpen = !dropdownOpen" 
@@ -207,12 +207,12 @@
                             </td>
 
                             <!-- Description -->
-                            <td class="px-5 py-3.5 text-slate-400 dark:text-slate-500 italic max-w-xs truncate" title="{{ $room->description }}">
+                            <td data-label="Descripción" class="px-5 py-3.5 text-slate-400 dark:text-slate-500 italic max-w-xs truncate" title="{{ $room->description }}">
                                 {{ $room->description ?: 'Sin observaciones' }}
                             </td>
 
                             <!-- Actions -->
-                            <td class="px-5 py-3.5 text-right space-x-1 shrink-0">
+                            <td data-label="Acciones" class="px-5 py-3.5 text-right space-x-1 shrink-0">
                                 <button wire:click="edit({{ $room->id }})" class="p-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="Editar Cuarto">
                                     <i class="fa-solid fa-pen text-sm"></i>
                                 </button>

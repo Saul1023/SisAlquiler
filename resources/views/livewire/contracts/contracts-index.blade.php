@@ -55,7 +55,7 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
+            <table class="w-full text-left text-xs border-collapse responsive-table">
                 <thead>
                     <tr class="bg-slate-50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider border-b border-slate-100 dark:border-slate-700/30">
                         <th class="px-5 py-3.5 cursor-pointer hover:bg-slate-100/50 dark:hover:bg-slate-700/30" wire:click="sortBy('room_id')">
@@ -79,13 +79,13 @@
                     @forelse($contracts as $contract)
                         <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors duration-200">
                             <!-- Room -->
-                            <td class="px-5 py-3.5 font-bold text-slate-900 dark:text-white">
+                            <td data-label="Cuarto" class="px-5 py-3.5 font-bold text-slate-900 dark:text-white">
                                 Cuarto {{ $contract->room->room_number ?? 'N/A' }}
                                 <span class="block text-[10px] text-slate-400 font-semibold mt-0.5">{{ $contract->room->floor ?? '' }}</span>
                             </td>
 
                             <!-- Tenant -->
-                            <td class="px-5 py-3.5">
+                            <td data-label="Inquilino" class="px-5 py-3.5">
                                 <div class="flex items-center gap-2">
                                     <img src="{{ $contract->tenant->photo_url ?? '' }}" alt="" class="w-6 h-6 rounded-full object-cover">
                                     <div>
@@ -96,23 +96,23 @@
                             </td>
 
                             <!-- Start Date -->
-                            <td class="px-5 py-3.5 font-medium text-slate-700 dark:text-slate-300">
+                            <td data-label="Entrada" class="px-5 py-3.5 font-medium text-slate-700 dark:text-slate-300">
                                 {{ $contract->start_date->format('d/m/Y') }}
                             </td>
 
                             <!-- End Date -->
-                            <td class="px-5 py-3.5 text-slate-500 dark:text-slate-450">
+                            <td data-label="Salida" class="px-5 py-3.5 text-slate-500 dark:text-slate-450">
                                 {{ $contract->end_date ? $contract->end_date->format('d/m/Y') : 'Indefinido' }}
                             </td>
 
                             <!-- Payment details -->
-                            <td class="px-5 py-3.5 text-slate-600 dark:text-slate-400">
+                            <td data-label="Pago" class="px-5 py-3.5 text-slate-600 dark:text-slate-400">
                                 <span class="block font-semibold">{{ $contract->payment_frequency }}</span>
                                 <span class="text-[10px] text-slate-400">Vence: Día {{ $contract->payment_day }}</span>
                             </td>
 
                             <!-- Active Services -->
-                            <td class="px-5 py-3.5">
+                            <td data-label="Servicios" class="px-5 py-3.5">
                                 <div class="flex flex-wrap gap-1 max-w-[150px]">
                                     @php
                                         $srvClass = 'px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-350 text-[9px] font-semibold';
@@ -130,12 +130,12 @@
                             </td>
 
                             <!-- Total Cost -->
-                            <td class="px-5 py-3.5 font-extrabold text-slate-900 dark:text-white font-mono">
+                            <td data-label="Total Mensual" class="px-5 py-3.5 font-extrabold text-slate-900 dark:text-white font-mono">
                                 {{ \App\Models\Setting::get('currency', 'Bs.') }} {{ number_format($contract->total_price, 2) }}
                             </td>
 
                             <!-- Status Badge -->
-                            <td class="px-5 py-3.5">
+                            <td data-label="Estado" class="px-5 py-3.5">
                                 <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase
                                     @if($contract->status === 'Activo') bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30
                                     @elseif($contract->status === 'Finalizado') bg-slate-100 dark:bg-slate-750 text-slate-500 dark:text-slate-400
@@ -146,7 +146,7 @@
                             </td>
 
                             <!-- Actions -->
-                            <td class="px-5 py-3.5 text-right space-x-0.5 shrink-0">
+                            <td data-label="Acciones" class="px-5 py-3.5 text-right space-x-0.5 shrink-0">
                                 @if($contract->status === 'Activo')
                                     <!-- Checkout Button -->
                                     <button wire:click="openFinalizeModal({{ $contract->id }})" class="bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/30 dark:hover:bg-amber-900/40 text-amber-600 dark:text-amber-400 font-bold px-2.5 py-1.5 rounded-lg text-[10px] shadow-sm border border-amber-200 dark:border-amber-900/40 active:scale-95 transition-all" title="Finalizar Alquiler (Check-out)">
@@ -217,7 +217,7 @@
                 <!-- Header -->
                 <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700/50 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
                     <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider font-outfit">
-                        Notas del Contrato
+                        Editar Contrato
                     </h3>
                     <button @click="@this.isEditModalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus:outline-none">
                         <i class="fa-solid fa-xmark text-lg"></i>
@@ -226,6 +226,18 @@
 
                 <!-- Form -->
                 <form wire:submit.prevent="saveNotes" class="p-6 space-y-4">
+                    <!-- Fecha de Ingreso -->
+                    <div class="space-y-1">
+                        <label class="block font-bold text-slate-600 dark:text-slate-350">Fecha de Ingreso *</label>
+                        <input 
+                            type="date" 
+                            wire:model="start_date" 
+                            class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-250 dark:border-slate-650 rounded-xl focus:border-blue-500 focus:outline-none text-slate-800 dark:text-slate-100"
+                        >
+                        @error('start_date') <span class="block text-[10px] text-rose-500 font-medium">{{ $message }}</span> @enderror
+                    </div>
+
+                    <!-- Observaciones -->
                     <div class="space-y-1">
                         <label class="block font-bold text-slate-600 dark:text-slate-350">Observaciones del Contrato</label>
                         <textarea 
@@ -234,6 +246,7 @@
                             placeholder="Detalles específicos..." 
                             class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-250 dark:border-slate-650 rounded-xl focus:border-blue-500 focus:outline-none text-slate-800 dark:text-slate-100"
                         ></textarea>
+                        @error('notes') <span class="block text-[10px] text-rose-500 font-medium">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Footer Action Buttons -->
@@ -242,7 +255,7 @@
                             Cancelar
                         </button>
                         <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md shadow-blue-500/10 flex items-center gap-1.5 transition-all">
-                            Guardar Notas
+                            Guardar Cambios
                         </button>
                     </div>
                 </form>

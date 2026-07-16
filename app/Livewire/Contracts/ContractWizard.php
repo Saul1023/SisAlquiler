@@ -46,7 +46,7 @@ class ContractWizard extends Component
     ];
     
     public $wifi_price = 50.00;
-    public $parking_price = 100.00;
+    public $parking_price = 50.00;
     public $cleaning_price = 80.00;
     public $water_light_price = 70.00;
 
@@ -61,7 +61,7 @@ class ContractWizard extends Component
         
         // Load service prices from configuration
         $this->wifi_price = (float)Setting::get('wifi_price', 50.00);
-        $this->parking_price = (float)Setting::get('parking_price', 100.00);
+        $this->parking_price = (float)Setting::get('parking_price', 50.00);
         $this->cleaning_price = (float)Setting::get('cleaning_price', 80.00);
         $this->water_light_price = (float)Setting::get('water_light_price', 70.00);
     }

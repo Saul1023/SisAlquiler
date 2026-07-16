@@ -48,6 +48,61 @@
             .dark ::-webkit-scrollbar-thumb {
                 background: #475569;
             }
+
+            /* Responsive Tables to Card Stacks on Mobile */
+            @media (max-width: 768px) {
+                .responsive-table thead {
+                    display: none;
+                }
+                .responsive-table tbody, 
+                .responsive-table tr, 
+                .responsive-table td {
+                    display: block;
+                    width: 100% !important;
+                }
+                .responsive-table tr {
+                    margin-bottom: 1rem;
+                    padding: 1rem;
+                    background: #ffffff;
+                    border: 1px solid #f1f5f9;
+                    border-radius: 1.25rem;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+                }
+                .dark .responsive-table tr {
+                    background: #1e293b;
+                    border-color: #334155/50;
+                }
+                .responsive-table td {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0.65rem 0;
+                    border-bottom: 1px dashed #f1f5f9;
+                    text-align: right;
+                }
+                .dark .responsive-table td {
+                    border-bottom-color: #334155/30;
+                }
+                .responsive-table td:last-child {
+                    border-bottom: none;
+                    padding-top: 0.75rem;
+                    justify-content: flex-end;
+                    gap: 0.5rem;
+                }
+                .responsive-table td::before {
+                    content: attr(data-label);
+                    font-weight: 750;
+                    color: #64748b;
+                    font-size: 10px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    text-align: left;
+                    margin-right: 1rem;
+                }
+                .dark .responsive-table td::before {
+                    color: #94a3b8;
+                }
+            }
         </style>
     </head>
     <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 antialiased min-h-screen transition-colors duration-300">
@@ -200,12 +255,34 @@
                 </header>
 
                 <!-- Page Content -->
-                <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+                <main class="flex-1 overflow-y-auto p-4 md:p-6 pb-24 md:pb-6 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
                     {{ $slot }}
                 </main>
 
+                <!-- Mobile Bottom Navigation Bar -->
+                <div class="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 h-16 flex items-center justify-around pb-safe lg:hidden shadow-[0_-4px_12px_rgba(0,0,0,0.04)]">
+                    @foreach ($menuItems as $item)
+                        @if(in_array($item['route'], ['dashboard', 'rooms.index', 'tenants.index', 'contracts.index', 'payments.index']))
+                            @php
+                                $isActive = request()->routeIs($item['route']) || (request()->segment(1) == explode('.', $item['route'])[0]);
+                            @endphp
+                            <a 
+                                href="{{ Route::has($item['route']) ? route($item['route']) : '#' }}" 
+                                class="flex flex-col items-center justify-center flex-1 h-full text-[9px] font-bold gap-1 transition-all"
+                                :class="{ 
+                                    'text-blue-600 dark:text-blue-400': '{{ $isActive }}' === '1',
+                                    'text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-350': '{{ $isActive }}' !== '1'
+                                }"
+                            >
+                                <i class="fa-solid {{ $item['icon'] }} text-base"></i>
+                                <span>{{ str_replace(['Escritorio', 'Habitaciones', 'Inquilinos', 'Contratos', 'Pagos'], ['Inicio', 'Cuartos', 'Inquilinos', 'Contratos', 'Pagos'], $item['label']) }}</span>
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
+
                 <!-- Footer -->
-                <footer class="h-10 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between px-6 text-xs text-slate-400 dark:text-slate-500">
+                <footer class="hidden md:flex h-10 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between px-6 text-xs text-slate-400 dark:text-slate-500">
                     <span>&copy; {{ date('Year') }} {{ \App\Models\Setting::get('company_name', 'Sistema Alquileres') }}. Todos los derechos reservados.</span>
                     <span>v1.0.0</span>
                 </footer>

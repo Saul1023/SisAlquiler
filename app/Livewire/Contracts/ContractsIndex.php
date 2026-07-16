@@ -26,6 +26,7 @@ class ContractsIndex extends Component
     public $isEditModalOpen = false;
     public $contract_id = null;
     public $notes = '';
+    public $start_date = '';
 
     // Finalize modal state
     public $isFinalizeOpen = false;
@@ -63,23 +64,30 @@ class ContractsIndex extends Component
         $this->sortField = $field;
     }
 
-    // Edit Notes Modal
+    // Edit Notes/Contract Modal
     public function editNotes($id)
     {
         $contract = Contract::findOrFail($id);
         $this->contract_id = $contract->id;
         $this->notes = $contract->notes;
+        $this->start_date = $contract->start_date ? $contract->start_date->format('Y-m-d') : '';
         $this->isEditModalOpen = true;
     }
 
     public function saveNotes()
     {
+        $this->validate([
+            'start_date' => 'required|date',
+            'notes' => 'nullable|string',
+        ]);
+
         $contract = Contract::findOrFail($this->contract_id);
+        $contract->start_date = Carbon::parse($this->start_date);
         $contract->notes = $this->notes;
         $contract->save();
         
         $this->isEditModalOpen = false;
-        $this->dispatch('swal:toast', type: 'success', message: 'Notas del contrato actualizadas.');
+        $this->dispatch('swal:toast', type: 'success', message: 'Contrato actualizado correctamente.');
     }
 
     // Finalize Contract Modal

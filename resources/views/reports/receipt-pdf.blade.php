@@ -181,7 +181,7 @@
                     @if($payment->contract->services['parking'] ?? false)
                         <tr>
                             <td>Servicios adicionales: Espacio de Estacionamiento</td>
-                            <td style="text-align: right; font-family: monospace;">{{ $currency }} {{ number_format(Setting::get('parking_price', 100.00), 2) }}</td>
+                            <td style="text-align: right; font-family: monospace;">{{ $currency }} {{ number_format(Setting::get('parking_price', 50.00), 2) }}</td>
                         </tr>
                     @endif
                     @if($payment->contract->services['cleaning'] ?? false)

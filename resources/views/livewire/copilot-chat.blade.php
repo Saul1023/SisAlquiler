@@ -56,11 +56,11 @@
                         </div>
                     </div>
                     
-                    <div class="flex items-center gap-1.5">
+                    <div class="flex items-center gap-2">
                         <!-- Trash/Clear Button -->
                         @if(count($chatHistory) > 0)
-                            <button wire:click="clearChat" class="p-1.5 text-slate-450 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" title="Limpiar historial">
-                                <i class="fa-solid fa-trash-can text-sm"></i>
+                            <button wire:click="clearChat" class="px-2.5 py-1.5 bg-rose-50 dark:bg-rose-950/20 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-rose-600 dark:text-rose-450 font-bold border border-rose-100 dark:border-rose-900/30 rounded-xl flex items-center gap-1.5 transition-colors duration-200" title="Limpiar conversación">
+                                <i class="fa-solid fa-trash-can text-[10px]"></i> Limpiar Chat
                             </button>
                         @endif
                         <!-- Close Drawer Button -->

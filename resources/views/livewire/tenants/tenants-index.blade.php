@@ -64,7 +64,7 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
+            <table class="w-full text-left text-xs border-collapse responsive-table">
                 <thead>
                     <tr class="bg-slate-50 dark:bg-slate-800/60 text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider border-b border-slate-100 dark:border-slate-700/30">
                         <th class="px-5 py-3.5">Foto</th>
@@ -85,32 +85,32 @@
                     @forelse($tenants as $tenant)
                         <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40 transition-colors duration-200">
                             <!-- Photo -->
-                            <td class="px-5 py-3">
+                            <td data-label="Foto" class="px-5 py-3">
                                 <img src="{{ $tenant->photo_url }}" alt="{{ $tenant->name }}" class="w-8 h-8 rounded-full object-cover border border-slate-200 dark:border-slate-700">
                             </td>
 
                             <!-- Name -->
-                            <td class="px-5 py-3.5 font-bold text-slate-900 dark:text-white">
+                            <td data-label="Nombre Completo" class="px-5 py-3.5 font-bold text-slate-900 dark:text-white">
                                 {{ $tenant->name }}
                             </td>
 
                             <!-- Identity -->
-                            <td class="px-5 py-3.5 font-medium text-slate-700 dark:text-slate-300 font-mono">{{ $tenant->identity_number }}</td>
+                            <td data-label="Doc. Identidad" class="px-5 py-3.5 font-medium text-slate-700 dark:text-slate-300 font-mono">{{ $tenant->identity_number }}</td>
 
                             <!-- Phone -->
-                            <td class="px-5 py-3.5 text-slate-600 dark:text-slate-400">
+                            <td data-label="Teléfono" class="px-5 py-3.5 text-slate-600 dark:text-slate-400">
                                 <a href="tel:{{ $tenant->phone }}" class="hover:underline flex items-center gap-1">
                                     <i class="fa-solid fa-phone text-[9px] text-slate-400"></i> {{ $tenant->phone }}
                                 </a>
                             </td>
 
                             <!-- Email -->
-                            <td class="px-5 py-3.5 text-slate-500 dark:text-slate-400 truncate max-w-[150px]">
+                            <td data-label="Email" class="px-5 py-3.5 text-slate-500 dark:text-slate-400 truncate max-w-[150px]">
                                 {{ $tenant->email ?: 'N/A' }}
                             </td>
 
                             <!-- Status -->
-                            <td class="px-5 py-3.5">
+                            <td data-label="Estado" class="px-5 py-3.5">
                                 <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase
                                     {{ $tenant->status === 'Activo' ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400' }}">
                                     {{ $tenant->status }}
@@ -118,12 +118,12 @@
                             </td>
 
                             <!-- Registered Date -->
-                            <td class="px-5 py-3.5 text-slate-400 dark:text-slate-500">
+                            <td data-label="F. Registro" class="px-5 py-3.5 text-slate-400 dark:text-slate-500">
                                 {{ $tenant->created_at ? $tenant->created_at->format('d/m/Y') : 'N/A' }}
                             </td>
 
                             <!-- Actions -->
-                            <td class="px-5 py-3.5 text-right space-x-0.5 shrink-0">
+                            <td data-label="Acciones" class="px-5 py-3.5 text-right space-x-0.5 shrink-0">
                                 <button wire:click="showHistory({{ $tenant->id }})" class="p-2 text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="Historial de Alquileres">
                                     <i class="fa-solid fa-clock-history text-sm"></i>
                                 </button>
